@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+sqlalchemy          # ORM für die Datenbank
+psycopg2-binary     # Postgres Treiber
+pydantic            # Validierung
+pydantic-settings   # Für sauberes Config-Management
+python-dotenv       # Liest .env Dateien
+alembic             # Für Datenbank-Migrationen (WICHTIG für CV!)
+passlib[bcrypt]     # Passwort Hashing
+python-jose[cryptography] # Für JWT Generierung
+httpx               # Für Requests an GitHub (OAuth)
