@@ -1,3 +1,5 @@
+"""Passwort wird gehasht und ein Salt wird automatisch hinzugefügt"""
+
 from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
