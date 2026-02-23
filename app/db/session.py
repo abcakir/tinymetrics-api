@@ -1,15 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.core.config import settings
 
-engine = create_engine(settings.DATABASE_URL)
+SQLALCHEMY_DATABASE_URL = "postgresql://tinyuser:tinypassword@localhost:5432/tinymetrics"
 
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Dependency Injection: Hilft später, Sessions in Endpoints zu nutzen
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
