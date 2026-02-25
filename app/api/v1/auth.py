@@ -33,6 +33,6 @@ def login(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = 
         raise HTTPException(status_code=400, detail="E-Mail oder Passwort falsch.")
     if not security.verify_password(form_data.password, user.password_hash):
         raise HTTPException(status_code=400, detail="E-Mail oder Passwort falsch.")
-    acess_token = create_access_token(subject=user.id)
+    access_token = create_access_token(subject=user.id)
 
-    return {"acess_token": acess_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer"}
