@@ -80,7 +80,7 @@ async def github_callback(code: str, db: Session = Depends(deps.get_db)):
             )
             email_data = email_response.json()
 
-            for e in emails:
+            for e in email_data:
                 if e.get("primary") and e["verified"]:
                     email = e["email"]
                     break
