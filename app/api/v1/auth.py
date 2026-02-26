@@ -78,9 +78,9 @@ async def github_callback(code: str, db: Session = Depends(deps.get_db)):
                 "https://api.github.com/user/emails",
                 headers={"Authorization": f"Bearer {access_token}"},
             )
-            email_data = email_response.json()
+            emails = email_response.json()
 
-            for e in email_data:
+            for e in emails:
                 if e.get("primary") and e["verified"]:
                     email = e["email"]
                     break
