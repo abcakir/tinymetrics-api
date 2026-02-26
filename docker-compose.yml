@@ -1,5 +1,5 @@
-# uvicorn app.main:app --reload
-# docker compose up -d
+# docker compose down
+# docker compose up --build
 
 version: '3.8'
 
