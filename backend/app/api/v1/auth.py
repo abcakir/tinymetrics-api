@@ -97,5 +97,5 @@ async def github_callback(code: str, db: Session = Depends(deps.get_db)):
             user_in = UserCreate(email=email, password=random_password)
             user = create_user(db=db, user=user_in)
         
-        access_token = create_access_token(subject=user.id)
-        return {"access_token": access_token, "token_type": "bearer", "message": "Login successful"}
+        app_access_token = create_access_token(subject=user.id)
+        return RedirectResponse(url=f"http://localhost:4200/login-success?token={app_access_token}")
