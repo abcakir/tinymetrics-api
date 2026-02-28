@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from app.api.v1 import auth, urls
@@ -6,6 +7,14 @@ from app.api import deps
 from app.crud.url import get_url_by_short_code
 
 app = FastAPI(title="TinyMetrics API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200", "http://127.0.0.1:4200"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(urls.router, prefix="/api/v1/urls", tags=["URLs"])
