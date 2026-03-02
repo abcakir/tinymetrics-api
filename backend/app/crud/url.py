@@ -27,7 +27,7 @@ def create_url(db: Session, url: UrlCreate, user_id: int):
     return db_url
 
 def get_urls_by_user(db: Session, user_id: int):
-    return db.query(Url).filter(Url.user_id == user_id).all()
+    return db.query(Url).filter(Url.user_id == user_id).order_by(Url.created_at.desc()).all()
 
 def get_url_by_short_code(db: Session, short_code: str):
     return db.query(Url).filter(Url.short_code == short_code).first()

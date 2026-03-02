@@ -1,7 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+
+interface UrlEntry {
+  id: number;
+  short_code: string;
+  original_url: string;
+  click_count: number;
+  created_at?: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -16,12 +24,50 @@ export class App implements OnInit {
   password = '';
   signupEmail = '';
   signupPassword = '';
+  urls: UrlEntry[] = [];
+  newUrl = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     console.log("🚀 App gestartet. Prüfe Login-Status..");
     this.checkUrlForToken();
+  }
+
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+  private loadUrls() {
+    this.http.get<UrlEntry[]>('http://localhost:8000/api/v1/urls/me', { headers: this.getAuthHeaders() })
+      .subscribe({
+        next: (data) => {
+          this.urls = data;
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error("Konnte URLs nicht laden", err)
+      });
+  }
+
+  shortenUrl() {
+    if (!this.newUrl) return; 
+    this.http.post<UrlEntry>('http://localhost:8000/api/v1/urls', 
+      { original_url: this.newUrl }, 
+      { headers: this.getAuthHeaders() }
+    ).subscribe({
+        next: (data) => {
+          this.urls.unshift(data); 
+          this.newUrl = '';
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error("Fehler:", err);
+          alert("Das hat nicht geklappt!");
+        }
+      });
   }
 
   private checkUrlForToken() {
@@ -33,6 +79,7 @@ export class App implements OnInit {
       console.log("Token in der URL gefunden! User wird eingeloggt.");
       localStorage.setItem('token', tokenFromUrl);
       this.isLoggedIn = true;
+      this.loadUrls();
       
       window.history.replaceState({}, document.title, window.location.pathname);
     } else {
@@ -45,6 +92,7 @@ export class App implements OnInit {
     if (tokenFromStorage) {
       console.log("User bereits eingeloggt.");
       this.isLoggedIn = true;
+      this.loadUrls();
     } else {
       console.log("User ist nicht eingeloggt.");
       this.isLoggedIn = false;
@@ -74,6 +122,7 @@ export class App implements OnInit {
           console.log("✅ Passwort-Login erfolgreich!");
           localStorage.setItem('token', response.access_token);
           this.isLoggedIn = true;
+          this.loadUrls();
         },
         error: (err) => {
           console.error("Login fehlgeschlagen:", err);
@@ -101,4 +150,11 @@ export class App implements OnInit {
       }
     });
   }
+
+copyToClipboard(shortCode: string) {
+  const fullUrl = `http://localhost:8000/${shortCode}`;
+  navigator.clipboard.writeText(fullUrl).then(() => {
+    alert("Link in die Zwischenablage kopiert!");
+  });
+}
 }
