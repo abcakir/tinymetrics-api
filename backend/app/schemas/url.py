@@ -1,4 +1,4 @@
-from pydantic import BaseModel, HttpUrl, field_validator
+from pydantic import BaseModel, HttpUrl, field_validator, ConfigDict
 from datetime import datetime
 
 class UrlCreate(BaseModel):
@@ -19,8 +19,7 @@ class UrlResponse(BaseModel):
     click_count: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class UrlStats(UrlResponse):
     pass
