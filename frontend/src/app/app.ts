@@ -42,7 +42,7 @@ export class App implements OnInit {
   }
 
   private loadUrls() {
-    this.http.get<UrlEntry[]>('http://tinymetrics.duckdns.org:8000/api/v1/urls/me', { headers: this.getAuthHeaders() })
+    this.http.get<UrlEntry[]>('https://tinymetrics.duckdns.org/api/v1/urls/me', { headers: this.getAuthHeaders() })
       .subscribe({
         next: (data) => {
           this.urls = data;
@@ -54,7 +54,7 @@ export class App implements OnInit {
 
   shortenUrl() {
     if (!this.newUrl) return; 
-    this.http.post<UrlEntry>('http://tinymetrics.duckdns.org:8000/api/v1/urls', 
+    this.http.post<UrlEntry>('https://tinymetrics.duckdns.org/api/v1/urls', 
       { original_url: this.newUrl }, 
       { headers: this.getAuthHeaders() }
     ).subscribe({
@@ -101,7 +101,7 @@ export class App implements OnInit {
 
   login() {
     console.log("Leite weiter zu GitHub...");
-    window.location.href = 'http://tinymetrics.duckdns.org:8000/api/v1/auth/github/login';
+    window.location.href = 'https://tinymetrics.duckdns.org/api/v1/auth/github/login';
   }
 
   logout() {
@@ -116,7 +116,7 @@ export class App implements OnInit {
     body.set('password', this.password);
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    this.http.post<any>('http://tinymetrics.duckdns.org:8000/api/v1/auth/login', body.toString(), { headers })
+    this.http.post<any>('https://tinymetrics.duckdns.org/api/v1/auth/login', body.toString(), { headers })
       .subscribe({
         next: (response) => {
           console.log("✅ Passwort-Login erfolgreich!");
@@ -133,7 +133,7 @@ export class App implements OnInit {
 
   signup() {
     this.http.post<{ id: number; email: string }>(
-      'http://tinymetrics.duckdns.org:8000/api/v1/auth/register',
+      'https://tinymetrics.duckdns.org/api/v1/auth/register',
       { email: this.signupEmail, password: this.signupPassword },
       { headers: { 'Content-Type': 'application/json' } }
     ).subscribe({
@@ -152,7 +152,7 @@ export class App implements OnInit {
   }
 
 copyToClipboard(shortCode: string) {
-  const fullUrl = `http://tinymetrics.duckdns.org:8000/${shortCode}`;
+  const fullUrl = `https://tinymetrics.duckdns.org/${shortCode}`;
   navigator.clipboard.writeText(fullUrl).then(() => {
     alert("Link in die Zwischenablage kopiert!");
   });
