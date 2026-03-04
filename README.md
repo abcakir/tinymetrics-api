@@ -1,34 +1,89 @@
-# 🚀 TinyMetrics API
+# TinyMetrics API
 
-A scalable, high-performance URL Shortener service featuring real-time analytics and OAuth2 authentication. Built for cloud deployment.
+Ein leistungsstarker URL-Shortener mit Fokus auf Cloud-Deployment, Analytics und sicherer Authentifizierung.
 
-## ✨ Features
-- **Shorten URLs**: Efficient algorithm for generating short codes.
-- **Analytics**: Track clicks, user agents, and timestamps in real-time.
-- **Security**: OAuth2 (GitHub) & JWT Authentication.
-- **Containerized**: Fully Dockerized for easy deployment (AWS compatible).
+---
 
-## 🛠 Tech Stack
-- **Core:** Python 3.11+, FastAPI
-- **Database:** PostgreSQL, SQLAlchemy, Alembic
-- **Infrastructure:** Docker, Docker Compose
-- **Testing:** Pytest
+## Kernfunktionen
 
-## ⚡️ Quick Start
+- **URL Shortening**: Generierung eindeutiger Kurz-Links über dedizierte `/s/` Pfade.
+- **Analytics**: Echtzeit-Tracking von Klicks und Metadaten.
+- **Authentifizierung**: Sichere Anmeldung via JWT und GitHub OAuth2.
+- **Infrastruktur**: Optimiert für Docker-Umgebungen hinter Reverse-Proxies.
 
-### Prerequisites
-- Docker & Docker Compose
+---
 
-### Run Locally
+## Tech Stack
+
+| Bereich | Technologie |
+|--------|-------------|
+| **Backend** | FastAPI (Python 3.11+), SQLAlchemy |
+| **Datenbank** | PostgreSQL |
+| **DevOps** | Docker, Docker Compose, Nginx Proxy Manager |
+| **Testing** | Pytest |
+
+---
+
+## Setup & Deployment
+
+### Voraussetzungen
+
+- Docker und Docker Compose installiert
+- GitHub OAuth Application (für Social Login)
+
+### Installation
+
+**1. Repository klonen**
+
 ```bash
-# 1. Clone the repo
-git clone [https://github.com/DEIN_USERNAME/tinymetrics-api.git](https://github.com/DEIN_USERNAME/tinymetrics-api.git)
+git clone https://github.com/DEIN_USERNAME/tinymetrics-api.git
+cd tinymetrics-api
+```
 
-# 2. Create .env file
-cp .env.example .env
+**2. Umgebungsvariablen konfigurieren**
 
-# 3. Start services
-docker-compose up -d --build
+Erstelle eine `.env` Datei im Hauptverzeichnis:
 
-# 4. Access API Docs
-Open http://localhost:8000/docs
+```env
+DATABASE_URL=postgresql://tinyuser:password@db:5432/tinymetrics
+SECRET_KEY=dein_geheimer_schluessel
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+GITHUB_CLIENT_ID=deine_id
+GITHUB_CLIENT_SECRET=dein_secret
+```
+
+**3. Container starten**
+
+```bash
+docker compose up -d --build
+```
+
+---
+
+## Deployment & Sicherheit
+
+### AWS EC2 Hosting
+
+Das Projekt ist für den Betrieb auf einer AWS EC2 Instanz (z. B. `t2.micro`) konfiguriert.
+
+- **Security Groups**: Für den Live-Betrieb müssen die Ports `80` (HTTP), `443` (HTTPS) und `22` (SSH) freigegeben sein.
+- **Orchestrierung**: Dank Docker Compose lassen sich Frontend, Backend und Datenbank konsistent bereitstellen.
+
+### SSL & Zertifikate (Let's Encrypt)
+
+Die Absicherung erfolgt über den **Nginx Proxy Manager (NPM)**:
+
+- **Automatische Zertifikate**: SSL-Zertifikate werden via Let's Encrypt generiert und automatisch erneuert.
+- **HTTPS Enforcement**: Der Proxy erzwingt verschlüsselte Verbindungen für die API, das Dashboard und die Redirects.
+- **Routing**: Anfragen an `/api` und `/s/` werden gezielt an den Backend-Container geleitet, während alle anderen Pfade das Frontend bedienen.
+
+---
+
+## Testing
+
+Die Testsuite wird innerhalb der Docker-Umgebung ausgeführt:
+
+```bash
+docker compose exec app pytest
+```
