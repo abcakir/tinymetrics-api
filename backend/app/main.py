@@ -39,4 +39,9 @@ def redirect_to_original(short_code: str, db: Session = Depends(deps.get_db)):
     url.click_count += 1
     db.commit()
 
-    return RedirectResponse(url.original_url)
+    target_url = url.original_url or ""
+    if not target_url.startswith(("http://", "https://")):
+        # Fallback für alte Einträge ohne Schema: immer https erzwingen
+        target_url = f"https://{target_url.lstrip('/')}"
+
+    return RedirectResponse(url=target_url)
