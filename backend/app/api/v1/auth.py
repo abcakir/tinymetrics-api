@@ -98,4 +98,4 @@ async def github_callback(code: str, db: Session = Depends(deps.get_db)):
             user = create_user(db=db, user=user_in)
         
         app_access_token = create_access_token(subject=user.id)
-        return RedirectResponse(url=f"http://localhost:4200?token={app_access_token}")
+        return RedirectResponse(url=f"https://tinymetrics.duckdns.org?token={app_access_token}")
