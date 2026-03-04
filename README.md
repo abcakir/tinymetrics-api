@@ -36,7 +36,7 @@ Ein leistungsstarker URL-Shortener mit Fokus auf Cloud-Deployment, Analytics und
 **1. Repository klonen**
 
 ```bash
-git clone https://github.com/DEIN_USERNAME/tinymetrics-api.git
+git clone https://github.com/abcakir/tinymetrics-api.git
 cd tinymetrics-api
 ```
 
