@@ -109,7 +109,7 @@ def test_create_and_redirect_url():
     short_code = url_data["short_code"]
 
     redirect_response = client.get(
-        f"/{short_code}",
+        f"/s/{short_code}",
         follow_redirects=False 
     )
     
