@@ -152,7 +152,7 @@ export class App implements OnInit {
   }
 
 copyToClipboard(shortCode: string) {
-  const fullUrl = `https://tinymetrics.duckdns.org/${shortCode}`;
+  const fullUrl = `https://tinymetrics.duckdns.org/s/${shortCode}`;
   navigator.clipboard.writeText(fullUrl).then(() => {
     alert("Link in die Zwischenablage kopiert!");
   });

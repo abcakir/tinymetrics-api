@@ -16,7 +16,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200", "http://tinymetrics.duckdns.org", "https://tinymetrics.duckdns.org"],
+    allow_origins=["http://localhost:4200", "https://tinymetrics.duckdns.org"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,7 +29,7 @@ app.include_router(urls.router, prefix="/api/v1/urls", tags=["URLs"])
 def read_root():
     return {"status": "active", "service": "TinyMetrics API"}
 
-@app.get("/{short_code}", tags=["redirect"])
+@app.get("/s/{short_code}", tags=["redirect"])
 def redirect_to_original(short_code: str, db: Session = Depends(deps.get_db)):
     url = get_url_by_short_code(db, short_code)
 
