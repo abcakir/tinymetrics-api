@@ -54,7 +54,7 @@ export class App implements OnInit {
 
   shortenUrl() {
     if (!this.newUrl) return; 
-    this.http.post<UrlEntry>('https://tinymetrics.duckdns.org/api/v1/urls', 
+    this.http.post<UrlEntry>('https://tinymetrics.duckdns.org/api/v1/urls/', 
       { original_url: this.newUrl }, 
       { headers: this.getAuthHeaders() }
     ).subscribe({
