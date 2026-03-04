@@ -5,8 +5,14 @@ from sqlalchemy.orm import Session
 from app.api.v1 import auth, urls
 from app.api import deps
 from app.crud.url import get_url_by_short_code
+from app.core.config import settings
 
-app = FastAPI(title="TinyMetrics API")
+app = FastAPI(
+    title="TinyMetrics API",
+    docs_url="/api/docs" if settings.DEBUG else None,
+    redoc_url=None, 
+    openapi_url="/api/openapi.json" if settings.DEBUG else None
+)
 
 app.add_middleware(
     CORSMiddleware,

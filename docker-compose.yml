@@ -1,10 +1,6 @@
-# docker compose down
-# docker compose up --build
-
 version: '3.8'
 
 services:
-
   db:
     image: postgres:15-alpine
     volumes:
@@ -41,5 +37,21 @@ services:
       - "4200:4200"
     environment:
       - CHOKIDAR_USEPOLLING=true
+
+  nginx-proxy:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx_proxy_manager
+    restart: unless-stopped
+    ports:
+      - '80:80'   # Standard HTTP
+      - '81:81'   # Admin Dashboard
+      - '443:443' # HTTPS (SSL)
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    depends_on:
+      - app
+      - frontend
+
 volumes:
   postgres_data:
