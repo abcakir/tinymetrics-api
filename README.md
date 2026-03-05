@@ -8,6 +8,14 @@ Ein schlanker URL-Shortener mit FastAPI und PostgreSQL, optimiert für AWS-Umgeb
 * Klick-Analytics im Backend
 * Vollständig containerisiert mit Docker
 
+## Screenshots
+
+## Screenshots
+
+| Screenshot 1 | Screenshot 2 |
+|--------------|--------------|
+| ![Screenshot 1](screenshots/url0.png) | ![Screenshot 2](screenshots/url1.png) |
+
 ## Tech Stack
 FastAPI, PostgreSQL, Docker, Angular, Tailwind CSS
 
