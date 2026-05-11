@@ -29,6 +29,10 @@ app.include_router(urls.router, prefix="/api/v1/urls", tags=["URLs"])
 def read_root():
     return {"status": "active", "service": "TinyMetrics API"}
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
 @app.get("/s/{short_code}", tags=["redirect"])
 def redirect_to_original(short_code: str, db: Session = Depends(deps.get_db)):
     url = get_url_by_short_code(db, short_code)
